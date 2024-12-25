@@ -42,7 +42,7 @@ class LoginPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Directionality(
-        textDirection: TextDirection.ltr, // تنظیم جهت متن به LTR
+        textDirection: TextDirection.ltr,
         child: Center(
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(16.0),
@@ -50,7 +50,6 @@ class LoginPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                // Logo or Image
                 Container(
                   width: 130.0,
                   height: 180.0,
@@ -78,7 +77,6 @@ class LoginPage extends StatelessWidget {
                 ),
                 const SizedBox(height: 20),
 
-                // Login Form
                 Form(
                   key: _formKey,
                   child: Column(
@@ -168,7 +166,12 @@ class LoginPage extends StatelessWidget {
 
                 // Forgot Password Link
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const ForgetPasswordPage()),
+                    );
+                  },
                   child: const Text(
                     'Forgot Password?',
                     style: TextStyle(color: Colors.red),
@@ -209,10 +212,132 @@ class LoginPage extends StatelessWidget {
 
 
 
+class ForgetPasswordPage extends StatelessWidget {
+  const ForgetPasswordPage({Key? key}) : super(key: key);
 
+  @override
+  Widget build(BuildContext context) {
+    final _formKey = GlobalKey<FormState>();
+    final _emailController = TextEditingController();
 
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Directionality(
+        textDirection: TextDirection.ltr,
+        child: Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Container(
+                  width: 130.0,
+                  height: 180.0,
+                  decoration: BoxDecoration(
+                    image: const DecorationImage(
+                      image: AssetImage('assets/logo.jpg'),
+                      fit: BoxFit.fitWidth,
+                    ),
+                    borderRadius: BorderRadius.circular(32.0),
+                    border: Border.all(
+                      color: Colors.white,
+                      width: 2.0,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                const Text(
+                  'Forgot Password?',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 24.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.red,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                const Text(
+                  'Please enter your email address to receive a verification code.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 16.0, color: Colors.black54),
+                ),
+                const SizedBox(height: 20),
+                Form(
+                  key: _formKey,
+                  child: TextFormField(
+                    controller: _emailController,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.grey[200],
+                      labelText: 'Email',
+                      hintText: 'Enter your email',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: BorderSide.none,
+                      ),
+                      prefixIcon: const Icon(Icons.email, color: Colors.red),
+                    ),
+                    keyboardType: TextInputType.emailAddress,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your email';
+                      }
+                      if (!RegExp(r'\S+@\S+\.\S+').hasMatch(value)) {
+                        return 'Please enter a valid email';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                const SizedBox(height: 20),
 
+                ElevatedButton(
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Verification code has been sent to your email!'),
+                          duration: Duration(seconds: 1),
+                        ),
+                      );
 
+                      Future.delayed(const Duration(seconds: 1), () {
+                        Navigator.pop(context);
+                      });
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red,
+                    padding: const EdgeInsets.symmetric(vertical: 16.0),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                  ),
+                  child: const Text(
+                    'Submit',
+                    style: TextStyle(fontSize: 18.0, color: Colors.white),
+                  ),
+                ),
+                const SizedBox(height: 16),
+
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text(
+                    'Back to Login',
+                    style: TextStyle(color: Colors.red),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
 
 
 
@@ -225,6 +350,8 @@ class SignUpPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _formKey = GlobalKey<FormState>();
+    final _passwordController = TextEditingController();
+    final _confirmPasswordController = TextEditingController();
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -320,6 +447,7 @@ class SignUpPage extends StatelessWidget {
 
                       // Password Field
                       TextFormField(
+                        controller: _passwordController,
                         decoration: InputDecoration(
                           filled: true,
                           fillColor: Colors.grey[200],
@@ -338,6 +466,33 @@ class SignUpPage extends StatelessWidget {
                           }
                           if (value.length < 6) {
                             return 'Password must be at least 6 characters';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 16),
+
+                      // Confirm Password Field
+                      TextFormField(
+                        controller: _confirmPasswordController,
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.grey[200],
+                          labelText: 'Confirm Password',
+                          hintText: 'Confirm your password',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                            borderSide: BorderSide.none,
+                          ),
+                          prefixIcon: const Icon(Icons.lock, color: Colors.red),
+                        ),
+                        obscureText: true,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please confirm your password';
+                          }
+                          if (value != _passwordController.text) {
+                            return 'Passwords do not match';
                           }
                           return null;
                         },
@@ -415,14 +570,14 @@ class HomePage extends StatelessWidget {
     Product(
       name: 'محصول ۱',
       price: '۲,۰۰۰,۰۰۰ تومان',
-      imagePath: 'assets/images/product1.jpg',
+      imagePath: 'assets/product1.jpg',
       rating: 4.5,
       sales: 250,
     ),
     Product(
       name: 'محصول ۲',
       price: '۱,۵۰۰,۰۰۰ تومان',
-      imagePath: 'assets/images/product2.jpg',
+      imagePath: 'assets/product2.jpg',
       rating: 4.2,
       sales: 180,
     ),
