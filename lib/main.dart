@@ -836,14 +836,25 @@ class HomePage extends StatelessWidget {
         ),
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
-          currentIndex: 0,
+          currentIndex: 2, // مقدار اولیه برای صفحه دسته‌بندی‌ها
           onTap: (index) {
-            if (index == 1) {
+            if (index == 0) {
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => CartPage()),
+                MaterialPageRoute(builder: (context) => HomePage()), // صفحه خانه
               );
+            } else if (index == 1) {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => CartPage()), // صفحه سبد خرید
+              );
+            } else if (index == 3) {
+              // Navigator.pushReplacement(
+              //   context,
+              //   MaterialPageRoute(builder: (context) => ProfilePage()), // صفحه حساب کاربری
+              // );
             }
+            // برای دسته‌بندی‌ها نیازی به کد اضافی نیست چون در همین صفحه هستیم.
           },
           items: const [
             BottomNavigationBarItem(
@@ -864,10 +875,14 @@ class HomePage extends StatelessWidget {
             ),
           ],
         ),
+
       ),
     );
   }
 }
+
+
+
 
 
 class ProductDetailsPage extends StatefulWidget {
@@ -1077,6 +1092,90 @@ class Product {
   });
 }
 
+
+class CategoriesPage extends StatelessWidget {
+  const CategoriesPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final List<Map<String, dynamic>> categories = [
+      {"title": "الکترونیک", "icon": Icons.devices},
+      {"title": "پوشاک", "icon": Icons.checkroom},
+      {"title": "کتاب", "icon": Icons.book},
+      {"title": "خانه و آشپزخانه", "icon": Icons.kitchen},
+      {"title": "محصولات زیبایی", "icon": Icons.brush},
+      {"title": "ورزشی", "icon": Icons.sports},
+    ];
+
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.red,
+        title: const Text('دسته‌بندی کالاها'),
+        centerTitle: true,
+      ),
+      body: Directionality(
+        textDirection: TextDirection.rtl, // تنظیم جهت متن به RTL
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: GridView.builder(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2, // تعداد ستون‌ها
+              crossAxisSpacing: 16.0, // فاصله افقی بین آیتم‌ها
+              mainAxisSpacing: 16.0, // فاصله عمودی بین آیتم‌ها
+              childAspectRatio: 3 / 4, // نسبت عرض به ارتفاع
+            ),
+            itemCount: categories.length,
+            itemBuilder: (context, index) {
+              final category = categories[index];
+              return GestureDetector(
+                onTap: () {
+                  // عملیات برای انتخاب دسته‌بندی
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('${category['title']} انتخاب شد')),
+                  );
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    borderRadius: BorderRadius.circular(8.0),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        blurRadius: 6.0,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        category['icon'],
+                        size: 64.0,
+                        color: Colors.red,
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        category['title']!,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+      ),
+    );
+  }
+}
 
 
 
