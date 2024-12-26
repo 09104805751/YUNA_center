@@ -10,7 +10,7 @@ void main() {
         child: child!,
       );
     },
-    home: const LoginPage(),
+    home:HomePage(),
   ));
 }
 
@@ -777,7 +777,6 @@ class HomePage extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
 
-                // نمایش لیست تمام محصولات به صورت عمودی
                 const Text(
                   'محصولات:',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -834,27 +833,150 @@ class HomePage extends StatelessWidget {
             ),
           ),
         ),
+          bottomNavigationBar: BottomNavigationBar(
+            type: BottomNavigationBarType.fixed,
+            currentIndex: 0, // چون این کد برای صفحه هوم است، ایندکس 0 می‌باشد.
+            onTap: (index) {
+              if (index == 0) {
+                // صفحه خانه، نیازی به انتقال نیست.
+              } else if (index == 1) {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => CartPage()), // صفحه سبد خرید
+                );
+              } else if (index == 2) {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => CategoriesPage()), // صفحه دسته‌بندی‌ها
+                );
+              } else if (index == 3) {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => ProfilePage()), // صفحه حساب کاربری
+                );
+              }
+            },
+            items: const [
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                label: 'خانه',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.shopping_cart),
+                label: 'سبد خرید',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.category),
+                label: 'دسته‌بندی‌ها',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.person),
+                label: 'حساب کاربری',
+              ),
+            ],
+          )
+      ),
+    );
+  }
+}
+
+
+class ProfilePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text(
+            'حساب کاربری',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          backgroundColor: Colors.red,
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Center(
+                child: CircleAvatar(
+                  radius: 50,
+                  backgroundImage: AssetImage('assets/images/profile.jpg'),
+                ),
+              ),
+              const SizedBox(height: 16),
+              Center(
+                child: Text(
+                  'نام کاربر',
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 8),
+              Center(
+                child: Text(
+                  'ایمیل کاربر: example@example.com',
+                  style: const TextStyle(fontSize: 14, color: Colors.grey),
+                ),
+              ),
+              const SizedBox(height: 24),
+              const Text(
+                'تنظیمات حساب:',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 8),
+              ListTile(
+                leading: const Icon(Icons.edit),
+                title: const Text('ویرایش اطلاعات'),
+                onTap: () {
+                  // هدایت به صفحه ویرایش اطلاعات
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.lock),
+                title: const Text('تغییر رمز عبور'),
+                onTap: () {
+                  // هدایت به صفحه تغییر رمز عبور
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.logout),
+                title: const Text('خروج از حساب'),
+                onTap: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => LoginPage()),
+                  );
+                },
+              ),
+            ],
+          ),
+        ),
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
-          currentIndex: 2, // مقدار اولیه برای صفحه دسته‌بندی‌ها
+          currentIndex: 3,
           onTap: (index) {
             if (index == 0) {
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => HomePage()), // صفحه خانه
+                MaterialPageRoute(builder: (context) => HomePage()),
               );
             } else if (index == 1) {
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => CartPage()), // صفحه سبد خرید
+                MaterialPageRoute(builder: (context) => CartPage()),
+              );
+            } else if (index == 2) {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => CategoriesPage()), // صفحه دسته‌بندی‌ها
               );
             } else if (index == 3) {
-              // Navigator.pushReplacement(
-              //   context,
-              //   MaterialPageRoute(builder: (context) => ProfilePage()), // صفحه حساب کاربری
-              // );
+              // صفحه حساب کاربری، نیازی به انتقال نیست.
             }
-            // برای دسته‌بندی‌ها نیازی به کد اضافی نیست چون در همین صفحه هستیم.
           },
           items: const [
             BottomNavigationBarItem(
@@ -875,12 +997,10 @@ class HomePage extends StatelessWidget {
             ),
           ],
         ),
-
       ),
     );
   }
 }
-
 
 
 
@@ -1173,9 +1293,52 @@ class CategoriesPage extends StatelessWidget {
           ),
         ),
       ),
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        currentIndex: 2, // چون این کد برای صفحه دسته‌بندی است، ایندکس 2 می‌باشد.
+        onTap: (index) {
+          if (index == 0) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => HomePage()), // صفحه خانه
+            );
+          } else if (index == 1) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => CartPage()), // صفحه سبد خرید
+            );
+          } else if (index == 2) {
+            // صفحه دسته‌بندی‌ها، نیازی به انتقال نیست.
+          } else if (index == 3) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => ProfilePage()), // صفحه حساب کاربری
+            );
+          }
+        },
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'خانه',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.shopping_cart),
+            label: 'سبد خرید',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.category),
+            label: 'دسته‌بندی‌ها',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'حساب کاربری',
+          ),
+        ],
+      ),
     );
   }
 }
+
 
 
 
@@ -1352,32 +1515,25 @@ class _CartPageState extends State<CartPage> {
       // نوار ناوبری
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        currentIndex: 1, // مشخص کردن صفحه فعلی (سبد خرید = 1)
+        currentIndex: 1, // تنظیم آیکون فعال برای سبد خرید
         onTap: (index) {
           if (index == 0) {
-            // بازگشت به خانه
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => HomePage()), // جایگزین با صفحه اصلی شما
+              MaterialPageRoute(builder: (context) => HomePage()), // رفتن به صفحه خانه
             );
           } else if (index == 1) {
             // باقی ماندن در صفحه سبد خرید
+          } else if (index == 2) {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => CartPage()),
+              MaterialPageRoute(builder: (context) => CategoriesPage()), // رفتن به صفحه دسته‌بندی‌ها
             );
-            // } else if (index == 2) {
-            //   // رفتن به صفحه دسته‌بندی‌ها
-            //   Navigator.pushReplacement(
-            //     context,
-            //     MaterialPageRoute(builder: (context) => CategoriesPage()), // جایگزین با صفحه دسته‌بندی
-            //   );
-            // } else if (index == 3) {
-            //   // رفتن به صفحه حساب کاربری
-            //   Navigator.pushReplacement(
-            //     context,
-            //     MaterialPageRoute(builder: (context) => ProfilePage()), // جایگزین با صفحه حساب کاربری
-            //   );
+          } else if (index == 3) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => ProfilePage()), // رفتن به صفحه حساب کاربری
+            );
           }
         },
         items: const [
@@ -1399,9 +1555,9 @@ class _CartPageState extends State<CartPage> {
           ),
         ],
       ),
-
     );
   }
+
 
   void _showAddAddressDialog() {
     showDialog(
