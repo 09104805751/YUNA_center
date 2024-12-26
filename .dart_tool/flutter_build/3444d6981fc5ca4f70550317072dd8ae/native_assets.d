@@ -1,0 +1,1 @@
+ C:\\Users\\pavilion\ 15\\Desktop\\yuna2\\YUNA_center\\.dart_tool\\flutter_build\\3444d6981fc5ca4f70550317072dd8ae\\native_assets.yaml: 

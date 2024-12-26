@@ -1091,18 +1091,31 @@ class CartPage extends StatefulWidget {
 class _CartPageState extends State<CartPage> {
   final List<Map<String, dynamic>> cartItems = [
     {
-      'name': 'محصول ۱',
-      'price': 2000000,
-      'discountedPrice': 1800000,
+      'name': 'SideBySide Fridge',
+      'price': 50000000,
+      'discountedPrice': 48000000,
       'quantity': 1,
-      'imagePath': 'assets/images/product1.jpg',
+      'imagePath': 'assets/product1.jpg',
     },
     {
-      'name': 'محصول ۲',
-      'price': 1500000,
-      'discountedPrice': 1500000,
+      'name': 'ّLG Fridge',
+      'price': 150000000,
+      'discountedPrice': 140000000,
       'quantity': 2,
-      'imagePath': 'assets/images/product2.jpg',
+      'imagePath': 'assets/product2.jpg',
+    },
+    {
+      'name': 'LG Microwave',
+      'price': 50000000,
+      'discountedPrice': 45000000,
+      'quantity': 1,
+      'imagePath': 'assets/product3.jpg',
+    },
+    {
+      'name': 'Ushanka',
+      'price': 1500000,
+      'quantity': 4,
+      'imagePath': 'assets/product4.jpg',
     },
   ];
 

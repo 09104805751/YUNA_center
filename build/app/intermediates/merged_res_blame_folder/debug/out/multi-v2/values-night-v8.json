@@ -4,7 +4,7 @@
             "outputFile": "com.example.main_project.app-mergeDebugResources-24:/values-night-v8/values-night-v8.xml",
             "map": [
                 {
-                    "source": "D:\\main_project\\YUNA_center\\android\\app\\src\\main\\res\\values-night\\styles.xml",
+                    "source": "C:\\Users\\pavilion 15\\Desktop\\yuna2\\YUNA_center\\android\\app\\src\\main\\res\\values-night\\styles.xml",
                     "from": {
                         "startLines": "3,14",
                         "startColumns": "4,4",
